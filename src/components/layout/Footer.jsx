@@ -1,13 +1,11 @@
 import React from 'react';
 
-const conlogoUrl = "https://storage.googleapis.com/hostinger-horizons-assets-prod/13e7dfcc-9954-41c7-a924-7433fd40a466/060a102f45e7b3e5c7fba88a7d09f9f0.png";
-
 const Footer = () => {
   return (
     <footer className="py-12 bg-slate-900 text-slate-400">
       <div className="container mx-auto px-4 md:px-6 text-center">
         <div className="flex justify-center mb-6">
-          <img src={conlogoUrl} alt="Convoo Logo Rodapé" className="h-10" />
+          <img src="/icons/logo-solo.png" alt="Convoo Logo Rodapé" className="h-36" />
         </div>
         <p className="text-sm mb-2">
           Conectando o mundo, uma conversa por vez.

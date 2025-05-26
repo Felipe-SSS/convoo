@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
-const conlogoUrl = "https://storage.googleapis.com/hostinger-horizons-assets-prod/13e7dfcc-9954-41c7-a924-7433fd40a466/060a102f45e7b3e5c7fba88a7d09f9f0.png";
-
 const navLinks = [
   { name: 'Funcionalidades', href: '#features' },
   { name: 'Como Funciona', href: '#how-it-works' },
@@ -15,7 +13,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <a href="#" className="flex items-center gap-2">
-          <img src={conlogoUrl} alt="Convoo Logo" className="h-10 md:h-12" />
+          <img src="/icons/logo-convoo.png" alt="Convoo Logo" className="h-10 md:h-12" />
         </a>
         <nav className="hidden md:flex gap-6">
           {navLinks.map((link) => (
