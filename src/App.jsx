@@ -13,6 +13,7 @@ import Agents from './pages/Agents';
 import Contacts from './pages/Contacts';
 import Certifications from './pages/Certifications';
 import Profile from './pages/Profile';
+import ConfigurationsPage from './pages/ConfigurationsPage';
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="contacts" element={<Contacts />} />
             <Route path="certifications" element={<Certifications />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="config" element={<ConfigurationsPage />} />
           </Route>
         </Routes>
       </div>
