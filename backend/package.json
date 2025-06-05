@@ -1,0 +1,30 @@
+{
+  "name": "convoo",
+  "version": "1.0.0",
+  "description": "Projeto FETIN 2025",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Felipe-SSS/convoo.git"
+  },
+  "author": "Joao Gabriel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Felipe-SSS/convoo/issues"
+  },
+  "homepage": "https://github.com/Felipe-SSS/convoo#readme",
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "prisma": "^6.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
