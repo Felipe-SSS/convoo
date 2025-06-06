@@ -1,5 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import WorldConnectionsMap from '@/components/ui/WorldConnectionsMap';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,6 +25,13 @@ const itemVariants = {
 };
 
 const Talk = () => {
+
+  const navigate = useNavigate();
+
+  const handleStartCall = () => {
+    navigate('/main/call-loading');
+  };
+  
   const userStats = [
     { title: 'Minutos Conversados', value: '1,230', icon: <Clock className="h-6 w-6 text-convoo-blue" />, progress: 75, color: 'bg-convoo-blue' },
     { title: 'Novos Contatos', value: '42', icon: <Users className="h-6 w-6 text-convoo-orange" />, progress: 60, color: 'bg-convoo-orange' },
@@ -51,12 +60,16 @@ const Talk = () => {
           <CardHeader className="items-center pb-2">
             <MessageCircle className="h-16 w-16 mb-4 opacity-80" />
             <CardTitle className="text-3xl font-bold">Inicie uma Conversa</CardTitle>
-            <CardDescription className="text-blue-100 text-lg max-w-md">
+            <CardDescription className="text-blue-100 text-lg max-w-2xl">
               Encontre alguém para praticar idiomas agora mesmo.
             </CardDescription>
           </CardHeader>
           <CardContent className="w-full">
-            <Button size="lg" className="w-full max-w-xs text-lg py-7 bg-convoo-orange hover:bg-convoo-orange/90 text-white shadow-lg transform hover:scale-105 transition-transform duration-300">
+            <Button 
+              size="lg" 
+              className="w-full max-w-xs text-lg py-7 bg-convoo-orange hover:bg-convoo-orange/90 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
+              onClick={handleStartCall}
+            >
               <Zap className="mr-2 h-5 w-5" /> Iniciar Chamada
             </Button>
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
@@ -166,6 +179,7 @@ const Talk = () => {
       </motion.div>
 
       <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        
         <Card className="bg-white shadow-lg">
           <CardHeader>
             <CardTitle className="text-xl flex items-center text-slate-700">
@@ -173,8 +187,12 @@ const Talk = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <img alt="Mapa mundial com pinos" className="w-full h-64 object-cover rounded-md" src="https://images.unsplash.com/photo-1676652822930-f82ccf06b7ef" />
-            <p className="text-sm text-slate-500 mt-2">Visualize suas interações ao redor do mundo.</p>
+            <div className="w-full h-64">
+              <WorldConnectionsMap />
+            </div>
+            <p className="text-sm text-slate-500 mt-2">
+              Visualize suas interações ao redor do mundo.
+            </p>
           </CardContent>
         </Card>
 

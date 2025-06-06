@@ -15,6 +15,7 @@ const Header = () => {
         <a href="#" className="flex items-center gap-2">
           <img src="/icons/logo-convoo.png" alt="Convoo Logo" className="h-10 md:h-12" />
         </a>
+
         <nav className="hidden md:flex gap-6">
           {navLinks.map((link) => (
             <a
@@ -26,14 +27,33 @@ const Header = () => {
             </a>
           ))}
         </nav>
-        <Link to="/main">
-          <Button size="lg" className="bg-convoo-orange hover:bg-convoo-orange/90 text-white hidden md:flex animate-subtle-pulse">
-            Comece Já
-          </Button>
-        </Link>
 
+        {/* Botões de Login e Cadastro */}
+        <div className="hidden md:flex gap-4">
+          <Link to="/login">
+            <Button
+              variant="outline"
+              className="border-convoo-blue text-convoo-blue hover:bg-convoo-blue/10"
+            >
+              Login
+            </Button>
+          </Link>
+          <Link to="/register">
+            <Button className="bg-convoo-orange hover:bg-convoo-orange/90 text-white">
+              Cadastre-se
+            </Button>
+          </Link>
+        </div>
+
+        {/* Menu mobile */}
         <Button size="icon" variant="ghost" className="md:hidden text-slate-700">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"
+               strokeLinecap="round" strokeLinejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"/>
+            <line x1="4" x2="20" y1="6" y2="6"/>
+            <line x1="4" x2="20" y1="18" y2="18"/>
+          </svg>
         </Button>
       </div>
     </header>

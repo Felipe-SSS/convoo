@@ -21,8 +21,7 @@ export default function DrawerLayout() {
   return (
     <div className="flex min-h-screen">
       
-      <aside className="w-60 h-screen bg-white relative z-10 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)] flex flex-col">
-        {/* Parte scrollável com logo e navegação principal */}
+      <aside className="fixed left-0 top-0 w-60 h-screen bg-white z-10 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)] flex flex-col">        {/* Parte scrollável com logo e navegação principal */}
         <div className="flex-1 overflow-y-auto p-4">
           <img src="/icons/logo-convoo.png" alt="Convoo Logo" className="h-10 mx-auto mb-6" />
           
@@ -57,7 +56,7 @@ export default function DrawerLayout() {
       </aside>
 
       {/* Conteúdo com scroll normal */}
-      <main className="flex-1 overflow-y-auto p-6 bg-slate-50">
+      <main className="flex-1 overflow-y-auto p-6 bg-slate-50 ml-60">
         <Outlet />
       </main>
     </div>
