@@ -6,12 +6,16 @@ CREATE TABLE IF NOT EXISTS roles (
   name VARCHAR(45) NOT NULL UNIQUE,
   description VARCHAR(255) NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  
+INSERT INTO roles(name,description) VALUES
+("Admin", "Admin do sistema"),
+("User", "Usuario comum");
 
 CREATE TABLE IF NOT EXISTS users (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(45) NOT NULL UNIQUE,
   email VARCHAR(255) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   is_verified BOOLEAN NOT NULL DEFAULT FALSE,
   verification_token VARCHAR(100) NULL,
@@ -59,3 +63,4 @@ CREATE TABLE IF NOT EXISTS video_call_participants (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (call_id) REFERENCES video_calls (id) ON DELETE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  
