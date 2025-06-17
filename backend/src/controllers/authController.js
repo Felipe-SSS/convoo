@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { sanitizeUser } = require("../utils/sanitizeUser");
 
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -38,7 +39,10 @@ exports.login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ token });
+    res.json({
+      token,
+      user: sanitizeUser(user),
+    });
   } catch (error) {
     res
       .status(500)
@@ -47,16 +51,16 @@ exports.login = async (req, res) => {
 };
 
 exports.criarAdmin = async (req, res) => {
-  const senhaHash = await bcrypt.hash('admin123', 10);
+  const senhaHash = await bcrypt.hash("admin123", 10);
 
   const user = await prisma.users.create({
     data: {
-      username: 'admin123',
-      email: 'admin123@teste.com',
+      username: "admin123",
+      email: "admin123@teste.com",
       password: senhaHash,
       role_id: 1,
     },
   });
 
-  res.json({ mensagem: 'Admin criado' });
+  res.status(201).json({ mensagem: "Admin criado" });
 };
