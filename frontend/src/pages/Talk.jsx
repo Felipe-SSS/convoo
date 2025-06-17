@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react'; // 1. Importa o hook useState
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import WorldConnectionsMap from '@/components/ui/WorldConnectionsMap';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,6 +25,23 @@ const itemVariants = {
 };
 
 const Talk = () => {
+  const navigate = useNavigate();
+
+  // 2. Cria estados para armazenar as seleções dos filtros
+  const [language, setLanguage] = useState('any'); // 'any' para "Qualquer"
+  const [country, setCountry] = useState('any');
+  const [topic, setTopic] = useState('any');     // 'any' para "Livre"
+
+  // 3. Modifica a função para enviar as preferências do usuário para a próxima página
+  const handleStartCall = () => {
+    navigate('/main/call-loading', { 
+      state: { 
+        preferences: { language, country, topic } 
+      } 
+    });
+  };
+  
+  // O restante dos seus dados (userStats, recentContacts) permanece o mesmo
   const userStats = [
     { title: 'Minutos Conversados', value: '1,230', icon: <Clock className="h-6 w-6 text-convoo-blue" />, progress: 75, color: 'bg-convoo-blue' },
     { title: 'Novos Contatos', value: '42', icon: <Users className="h-6 w-6 text-convoo-orange" />, progress: 60, color: 'bg-convoo-orange' },
@@ -37,7 +56,7 @@ const Talk = () => {
 
   return (
     <motion.div 
-      className="space-y-8"
+      className="space-y-8 p-4 md:p-8"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -51,22 +70,29 @@ const Talk = () => {
           <CardHeader className="items-center pb-2">
             <MessageCircle className="h-16 w-16 mb-4 opacity-80" />
             <CardTitle className="text-3xl font-bold">Inicie uma Conversa</CardTitle>
-            <CardDescription className="text-blue-100 text-lg max-w-md">
+            <CardDescription className="text-blue-100 text-lg max-w-2xl">
               Encontre alguém para praticar idiomas agora mesmo.
             </CardDescription>
           </CardHeader>
           <CardContent className="w-full">
-            <Button size="lg" className="w-full max-w-xs text-lg py-7 bg-convoo-orange hover:bg-convoo-orange/90 text-white shadow-lg transform hover:scale-105 transition-transform duration-300">
+            <Button 
+              size="lg" 
+              className="w-full max-w-xs text-lg py-7 bg-convoo-orange hover:bg-convoo-orange/90 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
+              onClick={handleStartCall}
+            >
               <Zap className="mr-2 h-5 w-5" /> Iniciar Chamada
             </Button>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left max-w-3xl mx-auto">
+              
+              {/* 4. Conecta os componentes Select ao estado do React */}
               <div>
                 <label htmlFor="language" className="block text-sm font-medium text-blue-200 mb-1">Idioma</label>
-                <Select>
+                <Select value={language} onValueChange={setLanguage} defaultValue="any">
                   <SelectTrigger id="language" className="bg-white/20 border-white/30 text-white placeholder:text-blue-100">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="any">Qualquer</SelectItem>
                     <SelectItem value="en">Inglês</SelectItem>
                     <SelectItem value="es">Espanhol</SelectItem>
                     <SelectItem value="fr">Francês</SelectItem>
@@ -74,9 +100,10 @@ const Talk = () => {
                   </SelectContent>
                 </Select>
               </div>
+
               <div>
                 <label htmlFor="country" className="block text-sm font-medium text-blue-200 mb-1">País de Preferência</label>
-                <Select>
+                <Select value={country} onValueChange={setCountry} defaultValue="any">
                   <SelectTrigger id="country" className="bg-white/20 border-white/30 text-white placeholder:text-blue-100">
                     <SelectValue placeholder="Qualquer" />
                   </SelectTrigger>
@@ -89,20 +116,22 @@ const Talk = () => {
                   </SelectContent>
                 </Select>
               </div>
+
               <div>
                 <label htmlFor="topic" className="block text-sm font-medium text-blue-200 mb-1">Assunto</label>
-                <Select>
+                <Select value={topic} onValueChange={setTopic} defaultValue="any">
                   <SelectTrigger id="topic" className="bg-white/20 border-white/30 text-white placeholder:text-blue-100">
                     <SelectValue placeholder="Livre" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="general">Livre</SelectItem>
+                    <SelectItem value="any">Livre</SelectItem>
                     <SelectItem value="hobbies">Hobbies</SelectItem>
                     <SelectItem value="travel">Viagens</SelectItem>
                     <SelectItem value="work">Trabalho</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
+
             </div>
           </CardContent>
         </Card>
@@ -119,7 +148,7 @@ const Talk = () => {
                     <span className="text-sm font-medium text-slate-600">{stat.title}</span>
                     <span className="text-sm font-bold">{stat.value}</span>
                   </div>
-                  <div className={`h-2 rounded ${stat.color}`} style={{ width: `${stat.progress}%` }}></div>
+                  <div className={`h-2 rounded-full ${stat.color}`} style={{ width: `${stat.progress}%` }}></div>
                 </div>
               ))}
             </CardContent>
@@ -149,7 +178,7 @@ const Talk = () => {
         </motion.div>
       </motion.div>
 
-      <motion.h2 variants={itemVariants} className="text-2xl font-bold text-slate-800 mt-10">Seu progresso</motion.h2>
+      <motion.h2 variants={itemVariants} className="text-2xl font-bold text-slate-800 mt-10">Estatísticas Gerais</motion.h2>
       <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {userStats.map(stat => (
           <Card key={stat.title} className="bg-white shadow-lg hover:shadow-xl transition-shadow">
@@ -159,7 +188,7 @@ const Talk = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <div className={`h-2 mt-2 rounded ${stat.color}`} style={{ width: `${stat.progress}%` }}></div>
+              <div className={`h-2 mt-2 rounded-full ${stat.color}`} style={{ width: `${stat.progress}%` }}></div>
             </CardContent>
           </Card>
         ))}
@@ -173,8 +202,12 @@ const Talk = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <img alt="Mapa mundial com pinos" className="w-full h-64 object-cover rounded-md" src="https://images.unsplash.com/photo-1676652822930-f82ccf06b7ef" />
-            <p className="text-sm text-slate-500 mt-2">Visualize suas interações ao redor do mundo.</p>
+            <div className="w-full h-64 bg-slate-100 rounded-md">
+              <WorldConnectionsMap />
+            </div>
+            <p className="text-sm text-slate-500 mt-2">
+              Visualize suas interações ao redor do mundo.
+            </p>
           </CardContent>
         </Card>
 
