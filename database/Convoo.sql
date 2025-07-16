@@ -39,17 +39,19 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   bio TEXT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  
+  CREATE TABLE IF NOT EXISTS user_stats (
+  user_id BIGINT PRIMARY KEY,
+  min_talked INT DEFAULT 0,
+  practice_sequence INT DEFAULT 0,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS video_calls (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   started_at TIMESTAMP NOT NULL,
   ended_at TIMESTAMP NULL,
-  duration_seconds INT GENERATED ALWAYS AS (
-	CASE
-		WHEN ended_at IS NOT NULL THEN timestampdiff(SECOND, started_at, ended_at)
-        ELSE NULL
-	END
-  ) STORED,
+  duration_seconds INT NULL,
   recording_url TEXT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -64,3 +66,26 @@ CREATE TABLE IF NOT EXISTS video_call_participants (
   FOREIGN KEY (call_id) REFERENCES video_calls (id) ON DELETE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
   
+DELIMITER //
+CREATE TRIGGER set_duration_before_insert
+BEFORE INSERT ON video_calls
+FOR EACH ROW
+BEGIN
+  IF NEW.ended_at IS NOT NULL THEN
+    SET NEW.duration_seconds = TIMESTAMPDIFF(SECOND, NEW.started_at, NEW.ended_at);
+  END IF;
+END;
+
+CREATE TRIGGER trg_add_minutes_to_user_stats
+AFTER UPDATE ON video_call_participants
+FOR EACH ROW
+BEGIN
+  -- Só atualiza se o usuário acabou de sair da call
+  IF OLD.left_at IS NULL AND NEW.left_at IS NOT NULL THEN
+    UPDATE user_stats
+    SET min_talked = min_talked + TIMESTAMPDIFF(MINUTE, NEW.joined_at, NEW.left_at)
+    WHERE user_id = NEW.user_id;
+  END IF;
+END;
+//
+DELIMITER ;
