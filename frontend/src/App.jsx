@@ -10,8 +10,6 @@ import {
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import AuthLayoutLogin from '@/components/layout/AuthLayoutLogin';
-import AuthLayoutRegister from '@/components/layout/AuthLayoutRegister';
 import { AnimatePresence } from 'framer-motion';
 
 import HomePage from './HomePage';
@@ -30,6 +28,9 @@ import Register from './Register';
 import CallLoadingPage from './pages/CallLoadingPage';
 import CallPage from './pages/CallPage';
 
+// Importe o componente de proteção
+import ProtectedRoute from './components/auth/ProtectedRoute';
+
 const AppRoutes = () => {
   const location = useLocation();
   const isDashboardRoute = location.pathname.startsWith('/main');
@@ -46,25 +47,34 @@ const AppRoutes = () => {
           {/* Landing Page */}
           <Route path="/" element={<HomePage />} />
 
-          {/* Páginas de autenticação com AuthLayout */}
+          {/* Páginas de autenticação */}
           <Route path="/login" element={<Login />} />
-
           <Route path="/register" element={<Register />} />
 
-          {/* Rotas do sistema */}
-          <Route path="/main" element={<DrawerLayout />}>
-            <Route index element={<Navigate to="talk" replace />} />
-            <Route path="talk" element={<Talk />} />
-            <Route path="agents" element={<Agents />} />
-            <Route path="contacts" element={<Contacts />} />
-            <Route path="certifications" element={<Certifications />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="config" element={<ConfigurationsPage />} />
-          </Route>
-
-          {/* Chamadas */}
-          <Route path="/main/call-loading" element={<CallLoadingPage />} />
-          <Route path="/main/call/:callId" element={<CallPage />} />
+          {/* Rotas do sistema agora protegidas */}
+          <Route 
+            path="/main/*" 
+            element={
+              <ProtectedRoute>
+                {/* O conteúdo abaixo só é acessível se o usuário estiver logado */}
+                <Routes>
+                    {/* Layout principal do painel */}
+                    <Route path="/" element={<DrawerLayout />}>
+                      <Route index element={<Navigate to="talk" replace />} />
+                      <Route path="talk" element={<Talk />} />
+                      <Route path="agents" element={<Agents />} />
+                      <Route path="contacts" element={<Contacts />} />
+                      <Route path="certifications" element={<Certifications />} />
+                      <Route path="profile" element={<Profile />} />
+                      <Route path="config" element={<ConfigurationsPage />} />
+                    </Route>
+                    {/* Rotas de chamada (também protegidas) */}
+                    <Route path="/call-loading" element={<CallLoadingPage />} />
+                    <Route path="/call/:callId" element={<CallPage />} />
+                </Routes>
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </AnimatePresence>
 
