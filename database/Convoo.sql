@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   user_id BIGINT PRIMARY KEY,
   min_talked INT DEFAULT 0,
   practice_sequence INT DEFAULT 0,
+  calls_made INT DEFAULT 0,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
