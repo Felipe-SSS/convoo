@@ -44,8 +44,6 @@ const Talk = () => {
   // O restante dos seus dados (userStats, recentContacts) permanece o mesmo
   const userStats = [
     { title: 'Minutos Conversados', value: '1,230', icon: <Clock className="h-6 w-6 text-convoo-blue" />, progress: 75, color: 'bg-convoo-blue' },
-    { title: 'Novos Contatos', value: '42', icon: <Users className="h-6 w-6 text-convoo-orange" />, progress: 60, color: 'bg-convoo-orange' },
-    { title: 'Idiomas Praticados', value: '3', icon: <Globe className="h-6 w-6 text-green-500" />, progress: 90, color: 'bg-green-500' },
     { title: 'Sequência de Prática', value: '15 dias', icon: <Zap className="h-6 w-6 text-purple-500" />, progress: 50, color: 'bg-purple-500' },
   ];
 
@@ -195,21 +193,6 @@ const Talk = () => {
       </motion.div>
 
       <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <Card className="bg-white shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-xl flex items-center text-slate-700">
-              <MapPin className="mr-2 h-5 w-5 text-red-500" /> Conexões por Região
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="w-full h-64 bg-slate-100 rounded-md">
-              <WorldConnectionsMap />
-            </div>
-            <p className="text-sm text-slate-500 mt-2">
-              Visualize suas interações ao redor do mundo.
-            </p>
-          </CardContent>
-        </Card>
 
         <Card className="bg-white shadow-lg">
           <CardHeader>

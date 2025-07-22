@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const { sanitizeUser } = require("../utils/sanitizeUser");
 const { success } = require("../utils/response");
 
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
   // --- DEBUGGING LOG ---
   // Este log é a ferramenta mais importante que temos agora. Ele mostra o que o servidor REALMENTE recebeu.
   console.log('>>> [REGISTO] Corpo da requisição recebido:', req.body);

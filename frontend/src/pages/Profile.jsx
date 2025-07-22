@@ -36,8 +36,6 @@ const Profile = () => {
             'Authorization': `Bearer ${token}`
           }
         });
-        console.log(res);
-        console.log(token);
         if (!res.ok) throw new Error('Erro ao buscar usuário');
         const data = await res.json();
         setUserData(data);
@@ -57,9 +55,10 @@ const Profile = () => {
   const interests = ['Tecnologia', 'Viagens', 'Fotografia', 'Música'];
 
   // Dynamic fields
-  const name = userData && userData.user_profiles ? `${userData.user_profiles.first_name} ${userData.user_profiles.last_name}` : '';
-  const email = userData ? userData.email : '';
-  const joinDate = userData ? formatDate(userData.created_at) : '';
+  const user = userData?.data;
+  const name = user?.user_profiles ? `${user.user_profiles.first_name} ${user.user_profiles.last_name}` : '';
+  const email = user?.email || '';
+  const joinDate = user ? formatDate(user.created_at) : '';
 
   if (loading) return <div className="p-8 text-center text-slate-500">Carregando perfil...</div>;
   if (error) return <div className="p-8 text-center text-red-500">{error}</div>;

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,17 +15,23 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useContext(AuthContext);
+  const { login, user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/main');
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-        toast({
-            title: "Erro no Login",
-            description: "Por favor, preencha todos os campos.",
-            variant: "destructive",
-        });
-        return;
+      toast({
+        title: "Erro no Login",
+        description: "Por favor, preencha todos os campos.",
+        variant: "destructive",
+      });
+      return;
     }
     setIsLoading(true);
     try {
@@ -35,7 +41,7 @@ const Login = () => {
         description: "Redirecionando para o painel...",
         className: "bg-green-500 text-white",
       });
-      navigate('/main');
+      // Removido o navigate('/main') daqui
     } catch (error) {
       const errorMessage = error.response?.data?.erro || "Credenciais inválidas. Tente novamente.";
       toast({

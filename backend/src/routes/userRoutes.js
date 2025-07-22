@@ -26,4 +26,8 @@ const userController = require("../controllers/userController");
 // Rotas
 router.get("/me", authToken, userController.listUser);
 
+// Rotas de onboarding do usuário
+router.post("/onboarding", authToken, userController.upsertOnboarding);
+router.get("/onboarding", authToken, userController.getOnboarding);
+
 module.exports = router;
