@@ -7,7 +7,6 @@ function sanitizeUser(user) {
     verification_sent_at,
     reset_password_token,
     reset_password_sent_at,
-    created_at,
     updated_at,
     ...safeUser
   } = user;
