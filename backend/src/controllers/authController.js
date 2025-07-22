@@ -14,12 +14,12 @@ exports.register = async (req, res) => {
   const { firstName, lastName, username, email, password, birthdate } = req.body;
 
   // Validação para garantir que todos os campos necessários chegaram
-  if (!firstName || !lastName || !username || !email || !password || !birthdate) {
-    return res.status(400).json({
-      erro: "Campos obrigatórios em falta.",
-      detalhe: "O servidor espera: firstName, lastName, username, email, password, birthdate.",
-    });
-  }
+if (!firstName || !lastName || !username || !email || !password || !birthdate) {
+  const err = new Error("Campos obrigatórios em falta.");
+  err.status = 400;
+  err.detalhe = "O servidor espera: firstName, lastName, username, email, password, birthdate.";
+  return next(err);
+}
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
