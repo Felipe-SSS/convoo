@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserCircle, Edit3, ShieldCheck, Bell, Globe } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,16 +14,55 @@ const pageVariants = {
   out: { opacity: 0, y: -20, transition: { duration: 0.3 } },
 };
 
+function formatDate(dateString) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
 const Profile = () => {
-  const user = {
-    name: 'Felipe Soares',
-    email: '6felipe.sss@email.com',
-    joinDate: '26 de Janeiro, 2025',
-    avatarUrl: '/icons/profile_teams.png',
-    nativeLanguage: 'Português (Brasil)',
-    learningLanguages: ['Inglês (Avançado)', 'Espanhol (Intermediário)'],
-    interests: ['Tecnologia', 'Viagens', 'Fotografia', 'Música'],
-  };
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem('authToken');
+        const res = await fetch('http://localhost:3000/users/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        console.log(res);
+        console.log(token);
+        if (!res.ok) throw new Error('Erro ao buscar usuário');
+        const data = await res.json();
+        setUserData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUser();
+  }, []);
+
+  // Hardcoded fields
+  const avatarUrl = '/icons/profile_teams.png';
+  const nativeLanguage = 'Português (Brasil)';
+  const learningLanguages = ['Inglês (Avançado)', 'Espanhol (Intermediário)'];
+  const interests = ['Tecnologia', 'Viagens', 'Fotografia', 'Música'];
+
+  // Dynamic fields
+  const name = userData && userData.user_profiles ? `${userData.user_profiles.first_name} ${userData.user_profiles.last_name}` : '';
+  const email = userData ? userData.email : '';
+  const joinDate = userData ? formatDate(userData.created_at) : '';
+
+  if (loading) return <div className="p-8 text-center text-slate-500">Carregando perfil...</div>;
+  if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
 
   return (
     <motion.div 
@@ -54,16 +93,16 @@ const Profile = () => {
             <CardHeader className="items-center">
               <Avatar className="h-24 w-24 mb-4 ring-4 ring-convoo-blue ">
                 <AvatarImage
-                  src={user.avatarUrl}
-                  alt={user.name}
+                  src={avatarUrl}
+                  alt={name}
                   className="object-cover object-center w-full h-full rounded-full"
                 />
-                <AvatarFallback>{user.name.substring(0,1)}</AvatarFallback>
+                <AvatarFallback>{name.substring(0,1)}</AvatarFallback>
               </Avatar>
 
-              <CardTitle className="text-2xl text-slate-800">{user.name}</CardTitle>
-              <CardDescription className="text-slate-500">{user.email}</CardDescription>
-              <CardDescription className="text-xs text-slate-400 mt-1">Membro desde: {user.joinDate}</CardDescription>
+              <CardTitle className="text-2xl text-slate-800">{name}</CardTitle>
+              <CardDescription className="text-slate-500">{email}</CardDescription>
+              <CardDescription className="text-xs text-slate-400 mt-1">Membro desde: {joinDate}</CardDescription>
             </CardHeader>
             <CardContent>
               <Button className="w-full bg-convoo-orange hover:bg-convoo-orange/90">Alterar Foto</Button>
@@ -77,12 +116,12 @@ const Profile = () => {
             <CardContent className="space-y-2 text-sm">
               <div>
                 <p className="font-semibold text-slate-600">Nativo:</p>
-                <p className="text-slate-500">{user.nativeLanguage}</p>
+                <p className="text-slate-500">{nativeLanguage}</p>
               </div>
               <div>
                 <p className="font-semibold text-slate-600">Aprendendo:</p>
                 <ul className="list-disc list-inside text-slate-500">
-                  {user.learningLanguages.map(lang => <li key={lang}>{lang}</li>)}
+                  {learningLanguages.map(lang => <li key={lang}>{lang}</li>)}
                 </ul>
               </div>
             </CardContent>
@@ -102,15 +141,15 @@ const Profile = () => {
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="name" className="text-slate-600">Nome Completo</Label>
-                <Input id="name" defaultValue={user.name} className="mt-1" />
+                <Input id="name" defaultValue={name} className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="email" className="text-slate-600">Email</Label>
-                <Input id="email" type="email" defaultValue={user.email} className="mt-1" disabled />
+                <Input id="email" type="email" defaultValue={email} className="mt-1" disabled />
               </div>
               <div>
                 <Label htmlFor="interests" className="text-slate-600">Interesses (separados por vírgula)</Label>
-                <Input id="interests" defaultValue={user.interests.join(', ')} className="mt-1" />
+                <Input id="interests" defaultValue={interests.join(', ')} className="mt-1" />
               </div>
               <Button className="bg-convoo-blue hover:bg-convoo-blue/90">Salvar Alterações</Button>
             </CardContent>
