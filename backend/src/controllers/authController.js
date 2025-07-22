@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { sanitizeUser } = require("../utils/sanitizeUser");
+const { success } = require("../utils/response");
 
 exports.register = async (req, res) => {
   // --- DEBUGGING LOG ---
@@ -22,8 +23,6 @@ exports.register = async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Cria o Utilizador e o Perfil numa única transação
     const user = await prisma.users.create({
       data: {
         username,
@@ -41,26 +40,10 @@ exports.register = async (req, res) => {
         user_profiles: true,
       },
     });
-
     console.log('✅ [REGISTO] Utilizador criado com sucesso:', user.email);
-    res.status(201).json(sanitizeUser(user));
-
+    res.status(201).json(success(sanitizeUser(user)));
   } catch (error) {
-    // --- DEBUGGING LOG ---
-    console.error('❌ [REGISTO] ERRO AO CRIAR UTILIZADOR:', error);
-
-    if (error.code === 'P2002') {
-      const target = error.meta.target;
-      return res.status(409).json({
-        erro: `Conflito de dados.`,
-        detalhe: `O ${target.includes('email') ? 'email' : 'username'} já está em uso.`,
-      });
-    }
-    
-    res.status(500).json({
-      erro: "Erro interno no servidor ao criar utilizador.",
-      detalhe: error.message,
-    });
+    next(error);
   }
 };
 
@@ -70,27 +53,19 @@ exports.login = async (req, res) => {
   try {
     const user = await prisma.users.findUnique({
       where: { email },
-      include: { roles: true, user_profiles: true }, // Incluir perfis no login também
+      include: { roles: true, user_profiles: true },
     });
     if (!user) return res.status(401).json({ erro: "Credenciais inválidas" });
-
     const senhaCorreta = await bcrypt.compare(password, user.password);
     if (!senhaCorreta) return res.status(401).json({ erro: "Credenciais inválidas" });
-
     const token = jwt.sign(
       { userId: user.id, name: user.username, role: user.roles.name },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-
-    res.json({
-      token,
-      user: sanitizeUser(user),
-    });
+    res.json(success({ token, user: sanitizeUser(user) }));
   } catch (error) {
-    res
-      .status(500)
-      .json({ erro: "Erro ao fazer login", detalhe: error.message });
+    next(error);
   }
 };
 
@@ -106,5 +81,5 @@ exports.criarAdmin = async (req, res) => {
     },
   });
 
-  res.status(201).json({ mensagem: "Admin criado" });
+  res.status(201).json(success({ mensagem: "Admin criado" }));
 };

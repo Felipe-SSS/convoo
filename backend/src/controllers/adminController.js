@@ -1,10 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { sanitizeUser, sanitizeUsers } = require("../utils/sanitizeUser");
+const { success } = require("../utils/response");
 
 exports.listUsers = async (req, res) => {
   const users = await prisma.users.findMany();
-  res.json(sanitizeUsers(users));
+  res.json(success(sanitizeUsers(users)));
 };
 
 exports.updateUser = async (req, res) => {
@@ -15,12 +16,9 @@ exports.updateUser = async (req, res) => {
       where: { id: Number(id) },
       data: { name, email },
     });
-    res.json(sanitizeUser(user));
+    res.json(success(sanitizeUser(user)));
   } catch (error) {
-    res.status(400).json({
-      erro: "Erro ao atualizar usuário",
-      detalhe: error.message,
-    });
+    next(error);
   }
 };
 
@@ -30,11 +28,8 @@ exports.deleteUser = async (req, res) => {
     await prisma.users.delete({
       where: { id: Number(id) },
     });
-    res.json({ mensagem: "Usuário deletado com sucesso!" });
+    res.json(success({ mensagem: "Usuário deletado com sucesso!" }));
   } catch (error) {
-    res.status(400).json({
-      erro: "Erro ao deletar usuário",
-      detalhe: error.message,
-    });
+    next(error);
   }
 };

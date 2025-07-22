@@ -1,3 +1,22 @@
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Retorna os dados do usuário autenticado
+ *     tags:
+ *       - Usuário
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do usuário
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado (role insuficiente)
+ *       404:
+ *         description: Usuário não encontrado
+ */
 const express = require("express");
 const router = express.Router();
 const authToken = require("../middlewares/authMiddleware");

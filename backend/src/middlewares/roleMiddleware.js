@@ -1,7 +1,9 @@
 function autorizarRole(rolesPermitidas) {
   return (req, res, next) => {
     if (!rolesPermitidas.includes(req.user.role)) {
-      return res.status(403).json({ erro: "Acesso negado." });
+      const error = new Error("Acesso negado.");
+      error.status = 403;
+      return next(error);
     }
     next();
   };
