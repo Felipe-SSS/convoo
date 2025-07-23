@@ -22,6 +22,7 @@ const router = express.Router();
 const authToken = require("../middlewares/authMiddleware");
 const authRole = require("../middlewares/roleMiddleware");
 const userController = require("../controllers/userController");
+const upload = require("../middlewares/uploadMiddleware");
 
 // Rotas
 router.get("/me", authToken, userController.listUser);
@@ -29,5 +30,8 @@ router.get("/me", authToken, userController.listUser);
 // Rotas de onboarding do usuário
 router.post("/onboarding", authToken, userController.upsertOnboarding);
 router.get("/onboarding", authToken, userController.getOnboarding);
+
+// Rota para upload da foto de perfil
+router.post("/me/profile-picture", authToken, upload.single("profile_picture"), userController.uploadProfilePicture);
 
 module.exports = router;

@@ -3,7 +3,31 @@ const prisma = new PrismaClient();
 const { sanitizeUser } = require("../utils/sanitizeUser");
 const { success } = require("../utils/response");
 
-exports.listUser = async (req, res) => {
+// Função para upload da foto de perfil
+// Campo do formulário deve ser 'profile_picture'
+exports.uploadProfilePicture = async (req, res, next) => {
+  const userId = req.user.userId;
+  if (!req.file) {
+    const err = new Error("Nenhum arquivo enviado.");
+    err.status = 400;
+    err.detalhe = "Envie um arquivo de imagem para atualizar a foto de perfil.";
+    next(err);
+  }
+  try {
+    const profilePictureName = req.file.filename;
+    const userProfile = await prisma.user_profiles.update({ // TODO@Jhone93567 Garantir que o usuário tenha um perfil antes de atualizar
+      where: { user_id: Number(userId) },
+      data: { profile_picture: profilePictureName }
+    });
+    res.json(success({
+      mensagem: "Foto de perfil atualizada com sucesso."
+    }));
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.listUser = async (req, res, next) => {
   try {
     const user = await prisma.users.findUniqueOrThrow({
       where: { id: Number(req.user.userId) },
@@ -12,20 +36,17 @@ exports.listUser = async (req, res) => {
     res.json(success(sanitizeUser(user)));
   } catch (error) {
     if (error.code === "P2025") {
-      res.status(404).json({
-        erro: "Usuario nao encontrado",
-        detalhe: error.message,
-      });
+      const err = new Error("Usuário não encontrado.");
+      err.status = 404;
+      err.message = error.message;
+      next(err);
     } else {
-      res.stats(500).json({
-        erro: "Erro interno no servidor",
-        detalhe: error.message,
-      });
+      next(error);
     }
   }
 };
 
-exports.upsertOnboarding = async (req, res) => {
+exports.upsertOnboarding = async (req, res, next) => {
   const userId = req.user.userId;
   const {
     country,
@@ -58,20 +79,20 @@ exports.upsertOnboarding = async (req, res) => {
         birthdate: new Date(birthdate)
       }
     });
-    res.status(200).json(onboarding);
+    res.status(200).json(success(onboarding));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-exports.getOnboarding = async (req, res) => {
+exports.getOnboarding = async (req, res, next) => {
   const userId = req.user.userId;
   try {
     const onboarding = await prisma.user_onboarding.findUnique({
       where: { user_id: userId }
     });
-    res.status(200).json(onboarding);
+    res.status(200).json(success(onboarding));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
