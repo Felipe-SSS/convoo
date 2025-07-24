@@ -33,6 +33,10 @@ exports.listUser = async (req, res, next) => {
       where: { id: Number(req.user.userId) },
       include: { user_profiles: true },
     });
+    // Adiciona caminho público da imagem, se existir
+    if (user.user_profiles.profile_picture) {
+      user.user_profiles.profile_picture = `/uploads/${user.user_profiles.profile_picture}`;
+    }
     res.json(success(sanitizeUser(user)));
   } catch (error) {
     if (error.code === "P2025") {
