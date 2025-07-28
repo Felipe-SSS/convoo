@@ -16,10 +16,8 @@
  *         description: Acesso negado (role insuficiente)
  *       404:
  *         description: Usuário não encontrado
- *
- * /users/onboarding:
- *   post:
- *     summary: Cria ou atualiza os dados de onboarding do usuário autenticado
+ *   put:
+ *     summary: Atualiza os dados do usuário autenticado (pelomenos um campo é necessário)
  *     tags:
  *       - Usuário
  *     security:
@@ -31,47 +29,43 @@
  *           schema:
  *             type: object
  *             properties:
+ *               first_name:
+ *                 type: string
+ *               last_name:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               bio:
+ *                 type: string
  *               country:
  *                 type: string
- *               languages:
- *                 type: array
- *                 items:
- *                   type: string
+ *               intent:
+ *                 type: string
  *               interests:
  *                 type: array
  *                 items:
  *                   type: string
- *               intent:
- *                 type: string
+ *               languages:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *               nickname:
  *                 type: string
- *               birthdate:
- *                 type: string
- *                 format: date
  *     responses:
  *       200:
- *         description: Dados de onboarding criados ou atualizados com sucesso
+ *         description: Dados do usuário atualizados com sucesso
  *       400:
- *         description: Dados inválidos
+ *         description: Nenhum dado para atualizar
  *       401:
  *         description: Token não fornecido ou inválido
- *       500:
- *         description: Erro interno no servidor
- *   get:
- *     summary: Retorna os dados de onboarding do usuário autenticado
- *     tags:
- *       - Usuário
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Dados de onboarding do usuário
- *       401:
- *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado (role insuficiente)
  *       404:
- *         description: Dados de onboarding não encontrados
- *       500:
- *         description: Erro interno no servidor
+ *         description: Usuário não encontrado
+ */
+
+/**
+ * @swagger
  * /users/me/profile-picture:
  *   post:
  *     summary: Faz upload da foto de perfil do usuário autenticado
@@ -100,6 +94,7 @@
  *       500:
  *         description: Erro interno no servidor
  */
+
 const express = require("express");
 const router = express.Router();
 const authToken = require("../middlewares/authMiddleware");
@@ -108,12 +103,8 @@ const userController = require("../controllers/userController");
 const upload = require("../middlewares/uploadMiddleware");
 
 // Rotas
-router.get("/me", authToken, userController.listUser);
-
-// Rotas de onboarding do usuário
-router.post("/onboarding", authToken, userController.upsertOnboarding);
-router.get("/onboarding", authToken, userController.getOnboarding);
-
-router.post("/me/profile-picture", authToken, upload.single("profile_picture"), userController.uploadProfilePicture);
+router.get("/me", authToken, authRole("User"), userController.listUser);
+router.put("/me", authToken, authRole("User"), userController.updateUser);
+router.post("/me/profile-picture", authToken, authRole("User"), upload.single("profile_picture"), userController.uploadProfilePicture);
 
 module.exports = router;

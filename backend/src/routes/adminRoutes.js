@@ -64,6 +64,7 @@
  *       403:
  *         description: Acesso negado (role insuficiente)
  */
+
 const express = require("express");
 const router = express.Router();
 const authToken = require("../middlewares/authMiddleware");
