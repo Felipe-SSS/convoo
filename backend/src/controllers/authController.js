@@ -17,7 +17,7 @@ exports.register = async (req, res, next) => {
   if (!firstName || !lastName || !username || !email || !password || !birthdate) {
     const err = new Error("Campos obrigatórios em falta.");
     err.status = 400;
-    err.message = "O servidor espera: firstName, lastName, username, email, password, birthdate.";
+    err.detalhe = "O servidor espera: firstName, lastName, username, email, password, birthdate.";
     return next(err);
   }
 

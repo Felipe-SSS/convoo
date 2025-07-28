@@ -11,11 +11,11 @@ exports.uploadProfilePicture = async (req, res, next) => {
     const err = new Error("Nenhum arquivo enviado.");
     err.status = 400;
     err.detalhe = "Envie um arquivo de imagem para atualizar a foto de perfil.";
-    next(err);
+    return next(err);
   }
   try {
     const profilePictureName = req.file.filename;
-    const userProfile = await prisma.user_profiles.update({ // TODO@Jhone93567 Garantir que o usuário tenha um perfil antes de atualizar
+    const userProfile = await prisma.user_profiles.update({ 
       where: { user_id: Number(userId) },
       data: { profile_picture: profilePictureName }
     });
@@ -42,7 +42,7 @@ exports.listUser = async (req, res, next) => {
     if (error.code === "P2025") {
       const err = new Error("Usuário não encontrado.");
       err.status = 404;
-      err.message = error.message;
+      err.detalhe = error.message;
       next(err);
     } else {
       next(error);
