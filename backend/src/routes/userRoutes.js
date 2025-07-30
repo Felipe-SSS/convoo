@@ -25,6 +25,8 @@ const userController = require("../controllers/userController");
 
 // Rotas
 router.get("/me", authToken, userController.listUser);
+router.get("/info", authToken, userController.getUserInfo);
+router.get("/:userId", userController.getUserById); // Nova rota para obter usuário por ID
 
 // Rotas de onboarding do usuário
 router.post("/onboarding", authToken, userController.upsertOnboarding);

@@ -33,11 +33,24 @@ if (!firstName || !lastName || !username || !email || !password || !birthdate) {
             first_name: firstName,
             last_name: lastName,
             birthdate: new Date(birthdate),
+            // Valores padrão para campos obrigatórios
+            intent: "learn", // valor padrão para intent
+            interests: [], // array vazio como JSON
+            languages: [], // array vazio como JSON
+            nickname: firstName, // usa o primeiro nome como nickname
+          },
+        },
+        // Criar também user_stats com valores padrão
+        user_stats: {
+          create: {
+            min_talked: 0,
+            practice_sequence: 0,
           },
         },
       },
       include: {
         user_profiles: true,
+        user_stats: true,
       },
     });
     console.log('✅ [REGISTO] Utilizador criado com sucesso:', user.email);
