@@ -49,7 +49,7 @@ const Profile = () => {
   }, []);
 
   // Hardcoded fields
-  const avatarUrl = '/icons/profile_teams.png';
+  const avatarUrl = '/icons/default_avatar.png';
   const nativeLanguage = 'Português (Brasil)';
   const learningLanguages = ['Inglês (Avançado)', 'Espanhol (Intermediário)'];
   const interests = ['Tecnologia', 'Viagens', 'Fotografia', 'Música'];
