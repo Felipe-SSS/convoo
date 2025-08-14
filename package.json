@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Workspace para o projeto Convoo - FETIN 2025",
   "scripts": {
-    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
-    "start": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "dev": "npm run ensure-uploads && concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "ensure-uploads": "node scripts/ensure-uploads.js",
     "backend:dev": "cd backend && npm run dev",
     "backend:start": "cd backend && npm run start",
     "frontend:dev": "cd frontend && npm run dev",
