@@ -6,7 +6,7 @@ export * from './atoms';
 // ========================================
 // MOLECULES - Combinações de átomos
 // ========================================
-// Por enquanto, não há moléculas específicas além das imagens
+export * from './molecules';
 
 // ========================================
 // ORGANISMS - Componentes complexos
