@@ -71,7 +71,7 @@ exports.updateUser = async (req, res, next) => {
       err.detalhe = error.message;
       return next(err);
     }
-    next(error);
+    return next(error);
   }
 };
 
@@ -95,11 +95,11 @@ exports.uploadProfilePicture = async (req, res, next) => {
       mensagem: "Foto de perfil atualizada com sucesso."
     }));
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
-exports.getUserInfo = async (req, res) => {
+exports.getUserInfo = async (req, res, next) => {
   try {
     const userId = req.user.userId; // Corrigido: usar userId
     console.log('getUserInfo - userId recebido:', userId);
@@ -139,12 +139,11 @@ exports.getUserInfo = async (req, res) => {
 
     res.json({ success: true, data: userInfo });
   } catch (error) {
-    console.error('Erro ao obter informações do usuário:', error);
-    res.status(500).json({ error: "Erro interno do servidor" });
+    return next(error);
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.getUserById = async (req, res, next) => {
   try {
     const { userId } = req.params;
     
@@ -182,7 +181,6 @@ exports.getUserById = async (req, res) => {
 
     res.json({ success: true, data: userInfo });
   } catch (error) {
-    console.error('Erro ao obter informações do usuário por ID:', error);
-    res.status(500).json({ error: "Erro interno do servidor" });
+    return next(error);
   }
 };

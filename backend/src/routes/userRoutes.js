@@ -66,6 +66,87 @@
 
 /**
  * @swagger
+ * /users/info:
+ *   get:
+ *     summary: Retorna informações básicas do usuário autenticado
+ *     tags:
+ *       - Usuário
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Informações básicas do usuário
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                     name:
+ *                       type: string
+ *                     nickname:
+ *                       type: string
+ *                     country:
+ *                       type: string
+ *                     username:
+ *                       type: string
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       404:
+ *         description: Usuário não encontrado
+ */
+
+/**
+ * @swagger
+ * /users/{userId}:
+ *   get:
+ *     summary: Retorna informações públicas de um usuário pelo ID
+ *     tags:
+ *       - Usuário
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         required: true
+ *         description: ID do usuário
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Informações públicas do usuário
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                     name:
+ *                       type: string
+ *                     nickname:
+ *                       type: string
+ *                     country:
+ *                       type: string
+ *                     username:
+ *                       type: string
+ *       404:
+ *         description: Usuário não encontrado
+ */
+
+/**
+ * @swagger
  * /users/me/profile-picture:
  *   post:
  *     summary: Faz upload da foto de perfil do usuário autenticado
@@ -98,15 +179,14 @@
 const express = require("express");
 const router = express.Router();
 const authToken = require("../middlewares/authMiddleware");
-const authRole = require("../middlewares/roleMiddleware");
 const userController = require("../controllers/userController");
 const upload = require("../middlewares/uploadMiddleware");
 
 // Rotas
-router.get("/me", authToken, authRole("User"), userController.listUser);
-router.get("/info", authToken, authRole("User"),userController.getUserInfo);
-router.get("/:userId", authRole("User"),userController.getUserById); // Nova rota para obter usuário por ID
-router.put("/me", authToken, authRole("User"), userController.updateUser);
-router.post("/me/profile-picture", authToken, authRole("User"), upload.single("profile_picture"), userController.uploadProfilePicture);
+router.get("/me", authToken, userController.listUser);
+router.get("/info", authToken, userController.getUserInfo);
+router.get("/:userId", userController.getUserById); // Nova rota para obter usuário por ID
+router.put("/me", authToken, userController.updateUser);
+router.post("/me/profile-picture", authToken, upload.single("profile_picture"), userController.uploadProfilePicture);
 
 module.exports = router;
