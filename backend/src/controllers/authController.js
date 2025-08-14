@@ -81,18 +81,3 @@ exports.login = async (req, res) => {
     next(error);
   }
 };
-
-exports.criarAdmin = async (req, res) => {
-  const senhaHash = await bcrypt.hash("admin123", 10);
-
-  const user = await prisma.users.create({
-    data: {
-      username: "admin123",
-      email: "admin123@teste.com",
-      password: senhaHash,
-      role_id: 1,
-    },
-  });
-
-  res.status(201).json(success({ mensagem: "Admin criado" }));
-};
