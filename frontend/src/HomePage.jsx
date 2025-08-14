@@ -1,9 +1,9 @@
 import React from 'react';
-import HeroSection from '@/components/sections/HeroSection';
-import FeaturesSection from '@/components/sections/FeaturesSection';
-import HowItWorksSection from '@/components/sections/HowItWorksSection';
-import AiFeatureSection from '@/components/sections/AiFeatureSection';
-import CtaSection from '@/components/sections/CtaSection';
+import HeroSection from '@/components/organisms/sections/HeroSection';
+import FeaturesSection from '@/components/organisms/sections/FeaturesSection';
+import HowItWorksSection from '@/components/organisms/sections/HowItWorksSection';
+import AiFeatureSection from '@/components/organisms/sections/AiFeatureSection';
+import CtaSection from '@/components/organisms/sections/CtaSection';
 
 const HomePage = () => {
   return (

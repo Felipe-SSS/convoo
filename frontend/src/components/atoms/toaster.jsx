@@ -5,8 +5,8 @@ import {
 	ToastProvider,
 	ToastTitle,
 	ToastViewport,
-} from '@/components/ui/toast';
-import { useToast } from '@/components/ui/use-toast';
+} from '@/components/atoms/toast.jsx';
+import { useToast } from '@/components/atoms/use-toast.js';
 import React from 'react';
 
 export function Toaster() {

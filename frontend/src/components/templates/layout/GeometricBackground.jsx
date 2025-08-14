@@ -27,16 +27,16 @@ const Hexagon = ({ size = 200, color = "#0b2c49" }) => (
 
 const TrianguloArredondado = ({ className, flipped = false, size = 100, color = "#F97316" }) => {
   const width = size;
-  const height = (size * 220) / 240; // nova altura proporcional
+  const height = (size * 220) / 240;
   const transform = flipped
-    ? `scale(1, -1) translate(0, -220)` // flip ajustado para altura nova
+    ? `scale(1, -1) translate(0, -220)`
     : `scale(1, 1)`;
 
   return (
     <svg
       width={width}
       height={height}
-      viewBox="0 0 240 220" // altura total menor agora
+      viewBox="0 0 240 220"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       preserveAspectRatio="xMidYMid meet"

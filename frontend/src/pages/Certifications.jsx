@@ -1,8 +1,6 @@
 import React from 'react';
 import { Award, CheckCircle, Download, Share2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter, Button, Progress } from '@/components';
 import { motion } from 'framer-motion';
 
 const pageVariants = {

@@ -92,6 +92,18 @@
   }
 }
 
+@layer utilities {
+	/* Hide scrollbar for Chrome, Safari and Opera */
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+   /* Hide scrollbar for IE, Edge and Firefox */
+	.no-scrollbar {
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;  /* Firefox */
+  }
+}
+
 /* For Framer Motion animations - basic setup for elements that will be animated */
 .fm-fade-in-up {
   opacity: 0;

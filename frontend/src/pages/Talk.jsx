@@ -1,10 +1,6 @@
 import React, { useState } from 'react'; // 1. Importa o hook useState
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import WorldConnectionsMap from '@/components/ui/WorldConnectionsMap';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Avatar, AvatarFallback, AvatarImage } from '@/components';
 import { MessageCircle, Zap, Clock, Users, Globe, BookOpen, MapPin, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 

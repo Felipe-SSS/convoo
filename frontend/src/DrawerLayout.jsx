@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Settings, LogOut } from 'lucide-react';
 import AuthContext from './context/AuthContext';
-import { useToast } from './components/ui/use-toast';
+import { useToast } from './components';
 
 const navItems = [
   { name: 'Conversar', icon: '/icons/talk.png', to: '/main/talk', imgClass: 'h-6 w-auto' },

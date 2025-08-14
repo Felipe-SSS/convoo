@@ -7,9 +7,8 @@ import {
   useLocation
 } from 'react-router-dom';
 
-import { Toaster } from '@/components/ui/toaster';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import { Toaster } from '@/components';
+import { Header, Footer } from '@/components';
 import { AnimatePresence } from 'framer-motion';
 
 import HomePage from './HomePage';
@@ -30,7 +29,7 @@ import CallLoadingPage from './pages/CallLoadingPage';
 import CallPage from './pages/CallPage';
 
 // Importe o componente de proteção
-import ProtectedRoute from './components/auth/ProtectedRoute';
+import { ProtectedRoute } from '@/components';
 
 const AppRoutes = () => {
   const location = useLocation();

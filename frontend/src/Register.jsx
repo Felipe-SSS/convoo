@@ -1,11 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayoutRegister from '@/components/layout/AuthLayoutRegister';
+import { Button, Input, Label, useToast, AuthLayoutRegister } from '@/components';
 import { Eye, EyeOff, User, Mail, Lock } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
 import AuthContext from './context/AuthContext';
 
 // Este é o ficheiro Register.jsx completo, com a lógica e os 'logs' de depuração

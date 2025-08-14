@@ -1,7 +1,6 @@
 import React from 'react';
 import { Bot, MessageSquare } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, Button } from '@/components';
 import { motion } from 'framer-motion';
 
 const pageVariants = {

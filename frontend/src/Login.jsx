@@ -1,11 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayoutLogin from '@/components/layout/AuthLayoutLogin';
+import { Button, Input, Label, useToast, AuthLayoutLogin } from '@/components';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
 import AuthContext from './context/AuthContext';
 
 const Login = () => {

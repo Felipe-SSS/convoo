@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserCircle, Edit3, ShieldCheck, Bell, Globe } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, Button, Avatar, AvatarFallback, AvatarImage, Input, Label, Switch } from '@/components';
 import { motion } from 'framer-motion';
 
 const pageVariants = {

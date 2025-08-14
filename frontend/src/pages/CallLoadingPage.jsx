@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Peer } from 'peerjs';
 import io from 'socket.io-client';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components';
 import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AuthContext from '../context/AuthContext';

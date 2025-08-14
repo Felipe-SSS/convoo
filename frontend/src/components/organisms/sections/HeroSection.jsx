@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms/button.jsx';
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 

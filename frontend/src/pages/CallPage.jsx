@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Peer } from 'peerjs';
-import { Button } from '@/components/ui/button';
+import { Button, Card, Avatar, AvatarFallback, AvatarImage, Input } from '@/components';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, MessageSquare, ScreenShare, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
 import io from 'socket.io-client';
 import AuthContext from '../context/AuthContext';
 import api from '../services/api';
