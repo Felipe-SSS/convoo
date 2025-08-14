@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button } from '@/components/atoms/button.jsx';
+import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components';
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -9,6 +10,19 @@ const sectionVariants = {
 };
 
 const HeroSection = () => {
+  const buttonRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+      buttonRef.current.classList.add('ring-4', 'ring-blue-300');
+    }
+    setTimeout(() => {
+      navigate('/login');
+    }, 300);
+  };
+
   return (
     <motion.section 
       initial="hidden"
@@ -39,12 +53,17 @@ const HeroSection = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <Button size="lg" className="text-lg px-10 py-7 bg-convoo-blue hover:bg-convoo-blue/90 text-white">
+          <Button 
+            ref={buttonRef}
+            size="lg" 
+            className="text-lg px-10 py-7 bg-convoo-blue hover:bg-convoo-blue/90 text-white transition-all duration-300"
+            onClick={handleButtonClick}
+          >
             Comece Agora Gratuitamente <ChevronRight className="ml-2 h-5 w-5" />
           </Button>
         </motion.div>
          <div className="mt-16 flex justify-center">
-            <img alt="Demonstração da interface do Convoo em um celular e tablet" className="max-w-full md:max-w-2xl rounded-lg shadow-2xl" src="src\components\img\convoo_eg.svg" />
+            <img alt="Demonstração da interface do Convoo em um celular e tablet" className="max-w-full md:max-w-2xl rounded-lg shadow-2xl" src="/icons/convoo_eg.svg" />
          </div>
       </div>
     </motion.section>

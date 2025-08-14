@@ -36,8 +36,8 @@ const AiFeatureSection = () => {
               <li className="flex items-center"><TrendingUp className="h-6 w-6 mr-3 text-sky-400" /> Feedback instantâneo sobre sua performance.</li>
               <li className="flex items-center"><MessageCircle className="h-6 w-6 mr-3 text-sky-400" /> Acompanhamento personalizado do seu nível.</li>
             </ul>
-            <Button size="lg" variant="outline" className="border-sky-400 text-sky-400 hover:bg-sky-400 hover:text-slate-800 transition-colors">
-              Experimente a Prática com IA <ChevronRight className="ml-2 h-5 w-5" />
+            <Button size="lg" variant="outline" className="border-sky-400 text-sky-400 hover:bg-sky-400 hover:text-slate-800 transition-colors hover:cursor-default">
+              Em breve... {/*<ChevronRight className="ml-2 h-5 w-5" />*/}
             </Button>
           </motion.div>
           <motion.div 

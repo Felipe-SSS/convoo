@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button } from '@/components/atoms/button.jsx';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -8,6 +9,20 @@ const sectionVariants = {
 };
 
 const CtaSection = () => {
+
+  const buttonRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+      buttonRef.current.classList.add('ring-4', 'ring-[#e8a175]');
+    }
+    setTimeout(() => {
+      navigate('/login');
+    }, 300);
+  };
+
   return (
     <motion.section 
       className="py-20 md:py-32 text-center bg-gradient-to-r from-convoo-blue to-blue-600 text-white"
@@ -21,7 +36,7 @@ const CtaSection = () => {
         <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto mb-10">
           Junte-se a milhares de estudantes de idiomas e comece sua jornada para a fluência hoje mesmo. É grátis para começar!
         </p>
-        <Button size="lg" className="text-lg px-10 py-7 bg-convoo-orange hover:bg-convoo-orange/90 text-white transform hover:scale-105 transition-transform">
+        <Button onClick={handleButtonClick} ref={buttonRef} size="lg" className="text-lg px-10 py-7 bg-convoo-orange hover:bg-convoo-orange/90 text-white transform hover:scale-105 transition-transform">
           Junte-se à Convoo Gratuitamente
         </Button>
          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-3xl mx-auto">
