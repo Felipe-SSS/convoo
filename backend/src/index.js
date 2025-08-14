@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const setupSwagger = require('./swagger');
 const errorMiddleware = require("./middlewares/errorMiddleware");
+const path = require('path');
 require("dotenv").config();
 
 const app = express();
@@ -15,6 +16,8 @@ BigInt.prototype.toJSON = function () {
 // Middlewares
 app.use(cors());
 app.use(express.json());
+// Servir arquivos estáticos da pasta uploads
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 setupSwagger(app);
 
 // Rotas

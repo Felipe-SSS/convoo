@@ -1,10 +1,10 @@
 -- AlterTable
 ALTER TABLE `user_profiles` DROP COLUMN `address`,
     ADD COLUMN `country` VARCHAR(255) NULL,
-    ADD COLUMN `intent` VARCHAR(255) NOT NULL,
-    ADD COLUMN `interests` JSON NOT NULL,
-    ADD COLUMN `languages` JSON NOT NULL,
-    ADD COLUMN `nickname` VARCHAR(50) NOT NULL;
+    ADD COLUMN `intent` VARCHAR(255) NULL,
+    ADD COLUMN `interests` JSON NULL,
+    ADD COLUMN `languages` JSON NULL,
+    ADD COLUMN `nickname` VARCHAR(50) NULL;
 
 -- CreateTable
 CREATE TABLE `user_stats` (

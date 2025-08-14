@@ -48,14 +48,20 @@ const Profile = () => {
     fetchUser();
   }, []);
 
-  // Hardcoded fields
-  const avatarUrl = '/icons/default_avatar.png';
+  // Dynamic fields
+  const user = userData?.data;
+  // Avatar dinâmico: usa a foto de perfil real se existir, senão um ícone padrão
+  let avatarUrl = '/icons/profile_teams.png';
+  if (user?.user_profiles?.profile_picture) {
+    // Se profile_picture já vier como caminho absoluto, use direto; senão, concatene com a base
+    avatarUrl = user.user_profiles.profile_picture.startsWith('http')
+      ? user.user_profiles.profile_picture
+      : `http://localhost:3000${user.user_profiles.profile_picture}`;
+  }
   const nativeLanguage = 'Português (Brasil)';
   const learningLanguages = ['Inglês (Avançado)', 'Espanhol (Intermediário)'];
   const interests = ['Tecnologia', 'Viagens', 'Fotografia', 'Música'];
 
-  // Dynamic fields
-  const user = userData?.data;
   const name = user?.user_profiles ? `${user.user_profiles.first_name} ${user.user_profiles.last_name}` : '';
   const email = user?.email || '';
   const joinDate = user ? formatDate(user.created_at) : '';
