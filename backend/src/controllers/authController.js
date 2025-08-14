@@ -60,8 +60,7 @@ if (!firstName || !lastName || !username || !email || !password || !birthdate) {
   }
 };
 
-// A sua função de login permanece a mesma, mas vamos garantir que está consistente
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await prisma.users.findUnique({
@@ -71,12 +70,28 @@ exports.login = async (req, res) => {
     if (!user) return res.status(401).json({ erro: "Credenciais inválidas" });
     const senhaCorreta = await bcrypt.compare(password, user.password);
     if (!senhaCorreta) return res.status(401).json({ erro: "Credenciais inválidas" });
+
+    // Verifica se é o primeiro login (last_login é null)
+    const isFirstLogin = user.last_login === null;
+
+    // Atualiza o last_login para o momento atual
+    const updatedUser = await prisma.users.update({
+      where: { id: user.id },
+      data: { last_login: new Date() },
+      include: { roles: true, user_profiles: true },
+    });
+
     const token = jwt.sign(
       { userId: user.id, name: user.username, role: user.roles.name },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    res.json(success({ token, user: sanitizeUser(user) }));
+
+    res.json(success({ 
+      token, 
+      user: sanitizeUser(updatedUser),
+      isFirstLogin 
+    }));
   } catch (error) {
     next(error);
   }

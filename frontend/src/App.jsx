@@ -14,6 +14,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import HomePage from './HomePage';
 import DrawerLayout from './DrawerLayout';
+import Onboarding from './Onboarding';
 
 import Talk from './pages/Talk';
 import Agents from './pages/Agents';
@@ -36,11 +37,12 @@ const AppRoutes = () => {
   const isDashboardRoute = location.pathname.startsWith('/main');
   const isCallRoute = location.pathname.startsWith('/main/call');
   const isAuthRoute = location.pathname === '/login' || location.pathname === '/register';
+  const isOnboardingRoute = location.pathname === '/onboarding';
 
   return (
     <div className={`flex flex-col min-h-screen ${isDashboardRoute ? 'bg-slate-100' : isAuthRoute ? 'bg-white' : 'bg-gradient-to-br from-slate-50 to-sky-100'} text-slate-800`}>
       <Toaster />
-      {!isDashboardRoute && !isCallRoute && !isAuthRoute && <Header />}
+      {!isDashboardRoute && !isCallRoute && !isAuthRoute && !isOnboardingRoute && <Header />}
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
@@ -50,6 +52,9 @@ const AppRoutes = () => {
           {/* Páginas de autenticação */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Rota de Onboarding */}
+          <Route path="/onboarding" element={<Onboarding />} />
 
           {/* Rotas do sistema agora protegidas */}
           <Route 
@@ -78,7 +83,7 @@ const AppRoutes = () => {
         </Routes>
       </AnimatePresence>
 
-      {!isDashboardRoute && !isCallRoute && !isAuthRoute && <Footer />}
+      {!isDashboardRoute && !isCallRoute && !isAuthRoute && !isOnboardingRoute && <Footer />}
     </div>
   );
 };

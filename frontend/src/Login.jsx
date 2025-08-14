@@ -15,13 +15,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { login, user } = useContext(AuthContext);
+  const { login, user, shouldRedirectToOnboarding } = useContext(AuthContext);
 
   useEffect(() => {
-    if (user) {
+    if (user && !shouldRedirectToOnboarding) {
       navigate('/main');
     }
-  }, [user, navigate]);
+  }, [user, navigate, shouldRedirectToOnboarding]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,13 +35,23 @@ const Login = () => {
     }
     setIsLoading(true);
     try {
-      await login(email, password);
-      toast({
-        title: "Login bem-sucedido!",
-        description: "Redirecionando para o painel...",
-        className: "bg-green-500 text-white",
-      });
-      // Removido o navigate('/main') daqui
+      const { isFirstLogin } = await login(email, password);
+      
+      if (isFirstLogin) {
+        toast({
+          title: "Bem-vindo ao Convoo!",
+          description: "Vamos configurar sua conta...",
+          className: "bg-blue-500 text-white",
+        });
+        navigate('/onboarding');
+      } else {
+        toast({
+          title: "Login bem-sucedido!",
+          description: "Redirecionando para o painel...",
+          className: "bg-green-500 text-white",
+        });
+        navigate('/main');
+      }
     } catch (error) {
       const errorMessage = error.response?.data?.erro || "Credenciais inválidas. Tente novamente.";
       toast({

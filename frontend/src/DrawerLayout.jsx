@@ -1,6 +1,8 @@
-import React from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Settings, LogOut } from 'lucide-react';
+import AuthContext from './context/AuthContext';
+import { useToast } from './components/ui/use-toast';
 
 const navItems = [
   { name: 'Conversar', icon: '/icons/talk.png', to: '/main/talk', imgClass: 'h-6 w-auto' },
@@ -17,6 +19,36 @@ const secondaryNavItems = [
 
 export default function DrawerLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    try {
+      logout();
+      
+      toast({
+        title: "Logout realizado",
+        description: "Você foi desconectado com sucesso.",
+        duration: 3000,
+      });
+      
+      navigate('/');
+      console.log('Logout realizado com sucesso');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+      
+      toast({
+        title: "Erro no logout",
+        description: "Ocorreu um erro ao desconectar. Tentando novamente...",
+        variant: "destructive",
+        duration: 3000,
+      });
+      
+      localStorage.removeItem('authToken');
+      navigate('/');
+    }
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -38,13 +70,12 @@ export default function DrawerLayout() {
           ))}
         </div>
 
-        {/* Parte fixa no rodapé */}
         <div className="p-4 border-t border-slate-200 space-y-1">
           {secondaryNavItems.map(item => (
             <Link
               key={item.name}
-              to={item.to}
-              onClick={item.name === 'Sair' ? () => console.log('Logout action') : undefined}
+              to={item.name === 'Sair' ? '#' : item.to}
+              onClick={item.name === 'Sair' ? handleLogout : undefined}
               className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-all
                 ${location.pathname === item.to ? 'bg-gray-200 text-gray-900' : 'text-slate-700 hover:bg-slate-100'}`}
             >
@@ -55,7 +86,6 @@ export default function DrawerLayout() {
         </div>
       </aside>
 
-      {/* Conteúdo com scroll normal */}
       <main className="flex-1 overflow-y-auto p-6 bg-slate-50 ml-60">
         <Outlet />
       </main>

@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(() => localStorage.getItem('authToken'));
     const [loading, setLoading] = useState(true);
+    const [shouldRedirectToOnboarding, setShouldRedirectToOnboarding] = useState(false);
 
     useEffect(() => {
         if (token) {
@@ -27,11 +28,18 @@ export const AuthProvider = ({ children }) => {
     // Função de Login
     const login = async (email, password) => {
         const response = await api.post('/auth/login', { email, password });
-        const { token, user } = response.data.data;
+        const { token, user, isFirstLogin } = response.data.data;
         localStorage.setItem('authToken', token);
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         setToken(token);
         setUser(user);
+        
+        // Se for o primeiro login, marca para redirecionar para onboarding
+        if (isFirstLogin) {
+            setShouldRedirectToOnboarding(true);
+        }
+        
+        return { isFirstLogin };
     };
 
     // Função de Registro CORRIGIDA para enviar os dados corretos
@@ -63,10 +71,25 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('authToken');
         setToken(null);
         setUser(null);
+        setShouldRedirectToOnboarding(false);
         delete api.defaults.headers.common['Authorization'];
     };
 
-    const authContextValue = { user, login, register, logout, loading, isAuthenticated: !!user };
+    // Função para limpar o flag de redirecionamento após navegar para onboarding
+    const clearOnboardingRedirect = () => {
+        setShouldRedirectToOnboarding(false);
+    };
+
+    const authContextValue = { 
+        user, 
+        login, 
+        register, 
+        logout, 
+        loading, 
+        isAuthenticated: !!user,
+        shouldRedirectToOnboarding,
+        clearOnboardingRedirect
+    };
 
     return (
         <AuthContext.Provider value={authContextValue}>

@@ -45,6 +45,8 @@ const Talk = () => {
   const userStats = [
     { title: 'Minutos Conversados', value: '1,230', icon: <Clock className="h-6 w-6 text-convoo-blue" />, progress: 75, color: 'bg-convoo-blue' },
     { title: 'Sequência de Prática', value: '15 dias', icon: <Zap className="h-6 w-6 text-purple-500" />, progress: 50, color: 'bg-purple-500' },
+    { title: 'Conversas Realizadas', value: '120', icon: <MessageCircle className="h-6 w-6 text-green-500" />, progress: 80, color: 'bg-green-500' },
+    { title: 'Países Conectados', value: '10', icon: <Globe className="h-6 w-6 text-yellow-500" />, progress: 60, color: 'bg-yellow-500' },
   ];
 
   const recentContacts = [
