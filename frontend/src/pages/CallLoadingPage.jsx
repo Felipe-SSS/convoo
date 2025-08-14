@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Peer } from 'peerjs';
 import io from 'socket.io-client';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
+import AuthContext from '../context/AuthContext';
+import api from '../services/api';
 
 const LoadingDot = ({ delay }) => (
   <motion.div
@@ -18,35 +20,62 @@ const CallLoadingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { preferences } = location.state || { preferences: { language: 'any', country: 'any', topic: 'any' } };
+  const { user } = useContext(AuthContext);
 
   const socketRef = useRef(null);
   const peerRef = useRef(null);
 
   useEffect(() => {
     const socket = io('http://localhost:3001');
-    //const socket = io('https://c48c-138-94-55-208.ngrok-free.app ');
     socketRef.current = socket;
-
-    /*const peer = new Peer(undefined, {
-      host: 'https://f36e-138-94-55-208.ngrok-free.app',
-      secure: true,
-      path: '/myapp'
-    });*/
 
     const peer = new Peer(undefined, {
       host: 'localhost', port: 9000, path: '/myapp',
     });
     peerRef.current = peer; 
 
-    peer.on('open', (peerId) => {
+    peer.on('open', async (peerId) => {
       console.log('[PeerJS] Conectado. ID:', peerId);
-      socket.emit('find-match', { peerId, preferences });
+      
+      // Obter ID do usuário atual
+      let userId = null;
+      
+      try {
+        if (user) {
+          console.log('CallLoadingPage - Usuário autenticado:', user);
+          const response = await api.get('/users/info');
+          console.log('CallLoadingPage - Resposta da API:', response.data);
+          userId = response.data.data.id;
+          console.log('CallLoadingPage - userId obtido:', userId);
+        } else {
+          console.log('CallLoadingPage - Nenhum usuário autenticado');
+        }
+      } catch (error) {
+        console.error('CallLoadingPage - Erro ao obter ID do usuário:', error);
+        console.error('CallLoadingPage - Detalhes do erro:', error.response?.data);
+      }
+      
+      console.log('CallLoadingPage - Enviando para socket:', { peerId, preferences, userId });
+      socket.emit('find-match', { peerId, preferences, userId });
     });
 
-    socket.on('match-found', ({ partnerPeerId, roomId }) => {
+    socket.on('match-found', ({ partnerPeerId, roomId, partnerUserId }) => {
       console.log(`[Socket.IO] Par encontrado: ${partnerPeerId}, Sala: ${roomId}`);
+      console.log(`[Socket.IO] ID do parceiro:`, partnerUserId);
+      
+      // Debug: Verificar se o ID do parceiro foi recebido
+      if (partnerUserId) {
+        console.log('✅ ID do parceiro recebido:', partnerUserId);
+      } else {
+        console.log('⚠️ Nenhum ID do parceiro recebido');
+      }
+      
       navigate(`/main/call/${roomId}`, {
-        state: { partnerPeerId, myPeerId: peer.id }
+        state: { 
+          partnerPeerId, 
+          myPeerId: peer.id,
+          partnerUserId: partnerUserId
+        }
       });
     });
 
@@ -54,7 +83,7 @@ const CallLoadingPage = () => {
       socket.disconnect();
       peer.destroy();
     };
-  }, [navigate, preferences]);
+  }, [navigate, preferences, user]);
 
   const handleCancel = () => {
     if (socketRef.current) {

@@ -104,6 +104,8 @@ const upload = require("../middlewares/uploadMiddleware");
 
 // Rotas
 router.get("/me", authToken, authRole("User"), userController.listUser);
+router.get("/info", authToken, authRole("User"),userController.getUserInfo);
+router.get("/:userId", authRole("User"),userController.getUserById); // Nova rota para obter usuário por ID
 router.put("/me", authToken, authRole("User"), userController.updateUser);
 router.post("/me/profile-picture", authToken, authRole("User"), upload.single("profile_picture"), userController.uploadProfilePicture);
 
