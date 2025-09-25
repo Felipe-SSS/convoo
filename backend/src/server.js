@@ -7,13 +7,13 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://a433-138-94-55-208.ngrok-free.app "], // IMPORTANTE: Mude para o domínio do seu frontend em produção
+    origin: "*", // IMPORTANTE: Mude para o domínio do seu frontend em produção
     methods: ["GET", "POST"]
   }
 });
 
 const PORT = /*process.env.PORT ||*/ 3001;
-
+const HOST = '0.0.0.0'
 // --- Lógica do Matchmaker com Filtros ---
 let waitingUsers = [];
 let connectedUsers = new Map(); // Armazena IDs dos usuários conectados
@@ -45,7 +45,6 @@ io.on('connection', (socket) => {
     if (partnerIndex !== -1) {
       const partner = waitingUsers.splice(partnerIndex, 1)[0];
       console.log(`[Matchmaker] Par compatível encontrado! ${currentUser.peerId} <=> ${partner.peerId}`);
-      
       const roomId = `${currentUser.socketId}-${partner.socketId}`;
 
       // Envia IDs dos parceiros para ambos os usuários
@@ -136,5 +135,5 @@ server.listen(PORT, () => {
   console.log(`🚀 Servidor de Matchmaking (Socket.IO) rodando na porta ${PORT}`);
 });
 
-PeerServer({ port: 9000, path: '/myapp' });
+PeerServer({ port: 9000, path: '/peerjs' });
 console.log(`🛰️ PeerServer (WebRTC) rodando na porta 9000`);

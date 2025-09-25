@@ -26,11 +26,18 @@ const CallLoadingPage = () => {
   const peerRef = useRef(null);
 
   useEffect(() => {
-    const socket = io('http://localhost:3001');
+    //const socket = io('http://localhost:3001');
+    const socket = io('https://calculated-transit-sister-dock.trycloudflare.com');
     socketRef.current = socket;
 
+    //const peer = new Peer(undefined, {
+    //  host: 'localhost', port: 9000, path: '/myapp',
+    //});
     const peer = new Peer(undefined, {
-      host: 'localhost', port: 9000, path: '/myapp',
+      host: 'assigned-experimental-webmaster-whereas.trycloudflare.com',
+      port: 443,
+      path: '/peerjs',
+      secure: true
     });
     peerRef.current = peer; 
 

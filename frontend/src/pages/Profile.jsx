@@ -31,7 +31,8 @@ const Profile = () => {
       setError(null);
       try {
         const token = localStorage.getItem('authToken');
-        const res = await fetch('http://localhost:3000/users/me', {
+        //const res = await fetch('http://localhost:3000/users/me', {
+        const res = await fetch('https://calculated-transit-sister-dock.trycloudflare.com/users/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -56,7 +57,8 @@ const Profile = () => {
     // Se profile_picture já vier como caminho absoluto, use direto; senão, concatene com a base
     avatarUrl = user.user_profiles.profile_picture.startsWith('http')
       ? user.user_profiles.profile_picture
-      : `http://localhost:3000${user.user_profiles.profile_picture}`;
+      //: `http://localhost:3000${user.user_profiles.profile_picture}`;
+      : `https://calculated-transit-sister-dock.trycloudflare.com${user.user_profiles.profile_picture}`;
   }
   const nativeLanguage = 'Português (Brasil)';
   const learningLanguages = ['Inglês (Avançado)', 'Espanhol (Intermediário)'];

@@ -38,7 +38,8 @@ const CallPage = () => {
 
   // Conectar ao socket para trocar IDs
   useEffect(() => {
-    const socketInstance = io('http://localhost:3001');
+    //const socketInstance = io('http://localhost:3001');
+    const socketInstance = io('https://calculated-transit-sister-dock.trycloudflare.com');
     setSocket(socketInstance);
 
     // Solicitar ID do parceiro
@@ -118,7 +119,13 @@ const CallPage = () => {
       return;
     }
 
-    const peer = new Peer(myPeerId, { host: 'localhost', port: 9000, path: '/myapp' });
+    //const peer = new Peer(myPeerId, { host: 'localhost', port: 9000, path: '/myapp' });
+    const peer = new Peer(myPeerId, { 
+      host: 'assigned-experimental-webmaster-whereas.trycloudflare.com',
+      port: 443,
+      path: '/peerjs',
+      secure: true
+    });
     peerRef.current = peer;
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })

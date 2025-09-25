@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const app = express();
 const PORT = /*process.env.PORT ||*/ 3000;
+const HOST = '0.0.0.0'; // Permite conexões externas
 
 // Middleware global para serializar BigInt
 BigInt.prototype.toJSON = function () {

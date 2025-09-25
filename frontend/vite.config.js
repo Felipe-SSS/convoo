@@ -185,6 +185,7 @@ export default defineConfig({
 	customLogger: logger,
 	plugins: [react(), addTransformIndexHtml],
 	server: {
+		host: "0.0.0.0",   // <--- this is the key
 		cors: true,
 		headers: {
 			'Cross-Origin-Embedder-Policy': 'credentialless',
