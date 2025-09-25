@@ -32,7 +32,7 @@ const Profile = () => {
       try {
         const token = localStorage.getItem('authToken');
         //const res = await fetch('http://localhost:3000/users/me', {
-        const res = await fetch('https://calculated-transit-sister-dock.trycloudflare.com/users/me', {
+        const res = await fetch('https://let-disclaimers-stickers-johnny.trycloudflare.com/users/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
